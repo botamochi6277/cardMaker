@@ -821,19 +821,19 @@ function cardMake() {
   console.log("attach credit and paper to svg group object");
   group.appendChild(credit);
   group.appendChild(paper);
-  if (!isPrint) {
-    console.log("start to print");
-    var draw = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    draw.setAttributeNS(null, 'x', margin.x);
-    draw.setAttributeNS(null, 'y', margin.y);
-    draw.setAttributeNS(null, 'width', paper_width - 2 * margin.x);
-    draw.setAttributeNS(null, 'height', paper_height - 2 * margin.y);
-    draw.setAttributeNS(null, 'stroke', '#1F1F21');
-    draw.setAttributeNS(null, 'stroke-width', paper_width / 1000);
-    draw.setAttributeNS(null, 'stroke-dasharray', paper_width / 100 + "," + paper_width / 100);
-    draw.setAttributeNS(null, 'fill', 'none');
-    group.appendChild(draw);
-  }
+//  if (!isPrint) {
+  //    console.log("start to print");
+  //    var draw = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  //    draw.setAttributeNS(null, 'x', margin.x);
+  //    draw.setAttributeNS(null, 'y', margin.y);
+  //    draw.setAttributeNS(null, 'width', paper_width - 2 * margin.x);
+  //    draw.setAttributeNS(null, 'height', paper_height - 2 * margin.y);
+  //    draw.setAttributeNS(null, 'stroke', '#1F1F21');
+  //    draw.setAttributeNS(null, 'stroke-width', paper_width / 1000);
+  //    draw.setAttributeNS(null, 'stroke-dasharray', paper_width / 100 + "," + paper_width / 100);
+  //    draw.setAttributeNS(null, 'fill', 'none');
+  //    group.appendChild(draw);
+  //  }
   console.log("attach groups to svg object");
   svg.appendChild(group);
   tagObj.innerHTML = svg.outerHTML;
