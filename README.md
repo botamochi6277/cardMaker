@@ -1,10 +1,10 @@
 # cardMaker
-Card/Label Maker in Javascript
+Card/Label Maker in Javascript with Icon Fonts
 
 Operating environment: Google Chrome.
 
 ### Usage
-1. Access <https://botamochi6277.github.io/cardMaker/form.html>
+1. Access <form.html>
 2. Fill forms: paper size, card/label parameters and card/label contents.
 3. Click **Card Preview** and **Paper Preview** bottoms.
 4. After check card/label design, click **Print** button.
