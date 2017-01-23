@@ -199,8 +199,8 @@ function fillsize() {
     break;
   default:
     //
-    elm_cw.value = elm_cw.value.toFixed(2);
-    elm_ch.value = elm_ch.value.toFixed(2);
+    elm_cw.value = convert_unit(elm_cw.value, "mm", elm_u.value).toFixed(2);
+    elm_ch.value = convert_unit(elm_ch.value, "mm", elm_u.value).toFixed(2);
     elm_ch.disabled = false;
     elm_cw.disabled = false;
     break;

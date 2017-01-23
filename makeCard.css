@@ -90,6 +90,12 @@ input[type="number"] {
   max-width: 6em;
 }
 
+input:disabled {
+  background: #DCDCDC;
+  cursor: not-allowed;
+  /* 禁止カーソル */
+}
+
 i {
   text-align: center;
 }
