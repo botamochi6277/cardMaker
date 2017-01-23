@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.ico">
+  <title>Card maker</title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://botamochi6277.github.io/FontBotamochi/build/fonts/FontBotamochi.css" rel="stylesheet">
+  <link href="./makeCard.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body onload="setup();fillsize();load_card_id();">
+  <div class="container" id="container">
+    <h1>
+      <div class="row">
+        <div class="col-md-9 col-sm-9 col-lg-9"><i class="fb fb-botamochi-card"></i> Card/Label Maker</div>
+        <div class="col-md-1 col-sm-1 col-lg-1" id="ver"><sub>ver.<br />2.0</sub></div>
+        <div class="col-md-1 col-sm-1 col-lg-1"><a href="info.html" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
+        <div class="col-md-1 col-sm-1 col-lg-1"><a href="https://github.com/botamochi6277/botamochi6277.github.io/tree/master/cardMaker" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i></a></div>
+      </div>
+    </h1>
+    <!-- Paper Size  -->
+    <div class="row">
+      <div class="col-md-6 col-sm-12 col-lg-6">
+        <h3>Paper Size</h3>
+        <div>
+          <div class="custom">
+            <select name="paper_size" id="paper_size" onchange="fillsize();">
+              <option value="A4">A4</option>
+              <option value="B5">B5</option>
+              <option value="Letter">Letter</option>
+              <option value="optional">Optional Size</option>
+            </select>
+          </div>
+          <div class="radio-inline">
+            <label>
+              <input type="radio" id="portrait" name="attitude" checked="checked" onclick="fillsize();">Portrait</label>
+          </div>
+          <div class="radio-inline">
+            <label>
+              <input type="radio" id="landscape" name="attitude" onclick="fillsize();">Landscape</label>
+          </div>
+        </div>
+        <br />
+        <!-- Paper Size -->
+        <div class="row">
+          <div class="col-xs-1"><strong>Size: </strong></div>
+          <div class="col-xs-11">
+            <input type="number" name="paper_width" id="paper_width" value="" placeholder="Width" /> <i class="fa fa-times"></i>
+            <input type="number" name="paper_height" id="paper_height" value="" placeholder="Height" />
+            <div class="custom">
+              <select name="unit" id="unit" class="selectpicker" onchange="fillsize();">
+                <option value="mm">mm&emsp; </option>
+                <option value="cm">cm&emsp; </option>
+                <option value="in">in&emsp; </option>
+                <option value="pt">pt&emsp; </option>
+                <option value="px">px&emsp; </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-1"><strong>Margin: </strong></div>
+          <div class="col-xs-11">
+            <input type="number" name="margin_x" id="margin_x" value="" placeholder="margin x" /> <i class="fa fa-times"></i>
+            <input type="number" name="margin_y" id="margin_y" value="" placeholder="margin y" /> <span id="slaveUnit0" class="unit"></span> </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-lg-6">
+        <h3>Card/Label Parameters</h3>
+        <div class="custom">
+          <select name="card_size" id="card_size" onchange="fillsize();">
+            <option value="tokyo4">Business Card, Tokyo 4</option>
+            <option value="smart">Business Card, Smart</option>
+            <option value="full">Full</option>
+            <option value="sqrt">Square</option>
+            <option value="KPC-HH110-20">KOKUYO, KPC-HH110-20</option>
+            <option value="KPC-HH112-20">KOKUYO, KPC-HH112-20</option>
+            <option value="KPC-HH124-20">KOKUYO, KPC-HH124-20</option>
+            <option value="optional">Optional Size</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-xs-1"><strong>Size: </strong></div>
+          <div class="col-xs-11">
+            <input type="number" name="card_width" id="card_width" value="" placeholder="Width" /> <i class="fa fa-times"></i>
+            <input type="number" name="card_height" id="card_height" value="" placeholder="Height" /> <span id="slaveUnit1" class="unit"></span> </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-1"><strong>Matrix: </strong></div>
+          <div class="col-xs-11">
+            <input type="number" name="card_rows" id="card_rows" value="" placeholder="Rows" /> <i class="fa fa-times"></i>
+            <input type="number" name="card_cols" id="card_cols" value="" placeholder="Cols" /> </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-1"><strong>Margin: </strong></div>
+          <div class="col-xs-11">
+            <input type="number" name="card_width" id="cardMarginX" value="" placeholder="X" /> <i class="fa fa-times"></i>
+            <input type="number" name="card_height" id="cardMarginY" value="" placeholder="Y" /> <span id="slaveUnit2" class="unit"></span> </div>
+        </div>
+        <div> <span><b>Outline: &nbsp;</b></span>
+          <div class="custom">
+            <select name="card_outline" id="card_outline" onchange="fillsize();">
+              <option value="rect">Rectangle </option>
+              <option value="ellipse">Ellipse</option>
+              <option value="diamond">Diamond</option>
+              <option value="capsule">Capsule</option>
+              <option value="hexagon">Hexagon</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section>
+      <h3>Card/Label Content</h3>
+      <!--  Card options    -->
+      <form class="form-inline"> <b>Variety: &nbsp;</b>
+        <div class="radio-inline">
+          <label>
+            <input type="radio" id="single" name="variety" checked="checked" onclick="fillsize();" value="single">Single</label>
+        </div>
+        <div class="radio-inline">
+          <label>
+            <input type="radio" id="multiple" name="variety" onchange="fillsize();load_card_id();" value="multiple">Multiple</label>
+        </div> <b>Options: &nbsp;</b>
+        <div class="checkbox-inline">
+          <label>
+            <input type="checkbox" value="ref" id="ref_on_card">ref</label>
+        </div>
+      </form>
+      <div id="card">
+        <input type="number" id="card_id" min="0" value="" placeholder="0" onchange="fillsize();load_card_id();" />
+        <div class="custom">
+          <select name="card_layout" id="card_layout" class="selectpicker" onchange="create_card();">
+            <option value="center">Center</option>
+            <option value="left">Left</option>
+          </select>
+        </div>
+        <input type="text" id="cap" value="" placeholder="Caption" onchange="create_card();" />
+        <input type="text" id="subcap" value="" placeholder="Subcaption" onchange="create_card();" />
+        <input type="text" id="icon_str" value="" placeholder="&#xf2b4;" style="font-family:FontAwesome;text-align:center;" onchange="create_card();" />
+        <div class="custom">
+          <select name="iconFont" id="iconFont" class="selectpicker" onchange="create_card();load_card_id();">
+            <option value="FontAwesome">FontAwesome</option>
+            <option value="FontBotamochi">FontBotamochi</option>
+          </select>
+        </div>
+        <!--        <button type="button" class="btn btn-default" onclick="create_card();">Apply</button>-->
+      </div>
+      <!-- Icon List-->
+      <div id="icon-list"> <span>Copy and Paste Icon Font from below lists and Cheatsheets (<a href="http://fontawesome.io/cheatsheet/" target="_blank">Font Awesome</a>/<a href="https://botamochi6277.github.io/FontBotamochi/build/fonts/FontBotamochi.html#cheatsheet" target="_blank">Font Botamochi</a> )</span>
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use plug">&#xf1e6</i> fa-plug </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use key">&#xf084</i> fa-key </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use wrench">&#xf0ad</i> fa-wrench </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use pencil">&#xf040</i> fa-pencil </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use bicycle">&#xf206</i> fa-bicycle </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use file-text">&#xf15c</i> fa-file-text </div>
+        </div>
+      </div>
+      <!--      <div style="width:auto;"></div>-->
+      <div>
+        <button type="button" class="btn btn-default" onclick="minicard();">Card Preview</button>
+        <button type="button" class="btn btn-primary" onclick="cardMake('id');">Paper Preview</button>
+        <!-- http://www.tam-tam.co.jp/tipsnote/javascript/post7977.html -->
+        <button type="button" class="btn btn-success" onclick="cardMake('print');">Print</button>
+        <button type="button" class="btn btn-info" onclick="cardMake('download');">Download</button>
+      </div>
+      <br />
+      <div style=""></div>
+      <div class="row" id="svgWrapper">
+        <div class="col-md-4 col-sm-12 col-lg-4" id="minicard"></div>
+        <div class="col-md-8 col-sm-12 col-lg-8" id="svg"></div>
+      </div>
+    </section>
+    <!--    <button type="button" class="btn" onclick="disp();">Disp</button>-->
+  </div>
+  <!-- end of container -->
+  <a id="svgPrint" onclick="revail();" href="#"></a>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="cardMaker.js"></script>
+</body>
+
+</html>

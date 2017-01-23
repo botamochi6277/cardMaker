@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.ico">
+  <title>Info</title>
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <style type="text/css">
+    #ver {
+      font-size: 12pt;
+      color: gray;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>
+      <div class="row">
+          <div class="col-md-1 col-sm-1 col-lg-1"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+          <div class="col-md-10 col-sm-10 col-lg-10">Information of <a href="./form.html">Card/Label Maker</a></div>
+          <div class="col-md-1 col-sm-1 col-lg-1" id="ver"><sub>ver.<br />2.00</sub></div>
+        </div>
+      </h1>
+    <section>
+      <h3>Units</h3>
+      <table class="table text-right" id="unit">
+        <thead>
+          <tr>
+            <th class="text-right">mm</th>
+            <th class="text-right">cm</th>
+            <th class="text-right">in</th>
+            <th class="text-right">pt</th>
+            <th class="text-right">px (Win)</th>
+            <th class="text-right">px (Mac/Linux)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- mm -->
+          <tr>
+            <td class="info">1</td>
+            <td>0.1</td>
+            <td>1/25.4</td>
+            <td>72/25.4</td>
+            <td>96/25.4</td>
+            <td>72/25.4</td>
+          </tr>
+          <!-- cm -->
+          <tr>
+            <td>10</td>
+            <td class="info">1</td>
+            <td>1/2.54</td>
+            <td>72/2.54</td>
+            <td>96/2.54</td>
+            <td>72/2.54</td>
+          </tr>
+          <!-- inch -->
+          <tr>
+            <td>25.4</td>
+            <td>2.54</td>
+            <td class="info">1</td>
+            <td>72</td>
+            <td>96</td>
+            <td>72</td>
+          </tr>
+          <!-- pt -->
+          <tr>
+            <td>25.4/72</td>
+            <td>2.54/72</td>
+            <td>1/72</td>
+            <td class="info">1</td>
+            <td>96/72</td>
+            <td>1</td>
+          </tr>
+          <!-- px(Win) -->
+          <tr>
+            <td>25.4/96</td>
+            <td>2.54/96</td>
+            <td>1/96</td>
+            <td>72/96</td>
+            <td class="info">1</td>
+            <td>72/96</td>
+          </tr>
+          <!-- px(Mac/Linux) -->
+          <tr>
+            <td>25.4/72</td>
+            <td>2.54/72</td>
+            <td>1/72</td>
+            <td>1</td>
+            <td>96/72</td>
+            <td class="info">1</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h3>Paper Size</h3>
+      <table class="table" id="unit">
+        <thead>
+          <tr>
+            <th>Pepar name</th>
+            <th class="text-right">Width [mm]</th>
+            <th class="text-right">Height [mm]</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>A4</th>
+            <td class="text-right">210</td>
+            <td class="text-right">297</td>
+          </tr>
+          <tr>
+            <th>B5</th>
+            <td class="text-right">176</td>
+            <td class="text-right">250</td>
+          </tr>
+          <tr>
+            <th>Letter</th>
+            <td class="text-right">215.9</td>
+            <td class="text-right">279.4</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h3>History</h3>
+      <ul class="list-group">
+        <li class="list-group-item"> <span class="label label-default label-pill pull-xs-right">2.00</span> Use session storage
+          <li class="list-group-item"> <span class="label label-default label-pill pull-xs-right">1.30</span> Capsule and hexagon outlines debuted. <q>Full</q> and <q>Square</q> joined card/label size. </li>
+          <li class="list-group-item"> <span class="label label-default label-pill pull-xs-right">1.20</span> Original Font, FontBotamochi, is available. </li>
+          <li class="list-group-item"> <span class="label label-default label-pill pull-xs-right">1.10</span> Ellipse and diamond outlines debuted. </li>
+          <li class="list-group-item"> <span class="label label-default label-pill pull-xs-right">1.00</span> Launched! </li>
+      </ul>
+    </section> <i class="fa fa-square-o "></i> </div>
+  <!-- end of container -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
