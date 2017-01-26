@@ -32,4 +32,4 @@ Operating environment: Google Chrome.
   **Multiple** radio allows a paper to have various cards.
 
 ![print](./img/print.png)
-  **Print** button hides everything except the paper. Please print (Cmd+P/&#x2318;+P) this page with no margin.
+  **Print** button generate a svg image. Please print (Cmd+P/&#x2318;+P) this image with no margin.

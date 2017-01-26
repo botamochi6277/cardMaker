@@ -22,7 +22,7 @@
     <h1>
       <div class="row">
         <div class="col-md-9 col-sm-9 col-lg-9"><i class="fb fb-botamochi-card"></i> Card/Label Maker</div>
-        <div class="col-md-1 col-sm-1 col-lg-1" id="ver"><sub>ver.<br />2.0</sub></div>
+        <div class="col-md-1 col-sm-1 col-lg-1" id="ver"><sub>ver.<br />2.10</sub></div>
         <div class="col-md-1 col-sm-1 col-lg-1"><a href="info.html" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
         <div class="col-md-1 col-sm-1 col-lg-1"><a href="https://github.com/botamochi6277/botamochi6277.github.io/tree/master/cardMaker" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i></a></div>
       </div>
@@ -170,10 +170,7 @@
       <div>
         <button type="button" class="btn btn-default" onclick="minicard();">Card Preview</button>
         <button type="button" class="btn btn-primary" onclick="cardMake('id');">Paper Preview</button>
-        <!-- http://www.tam-tam.co.jp/tipsnote/javascript/post7977.html -->
-        <button type="button" class="btn btn-success" onclick="cardMake('print');">Print</button>
-        <button type="button" class="btn btn-info" onclick="cardMake('download');">Download</button>
-      </div>
+        <!-- http://www.tam-tam.co.jp/tipsnote/javascript/post7977.html --><a type="button" class="btn btn-success" onclick="cardMake('print');" id="print" href="" target="_blank">Print</a> <a target="_blank" type="button" class="btn btn-info" onclick="cardMake('download');" id="download" download="test.txt">Download</a> </div>
       <br />
       <div style=""></div>
       <div class="row" id="svgWrapper">

@@ -250,7 +250,7 @@ function load_card_id() {
     document.getElementById("icon_str").placeholder = " icon";
     break;
   case "FontBotamochi":
-    document.getElementById("icon_str").placeholder = " icon";
+    document.getElementById("icon_str").placeholder = " icon";
     break;
   }
 }
@@ -780,7 +780,9 @@ function cardMake() {
   var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttributeNS(null, 'version', '1.1');
   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  //  svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
   svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+  //  <?xml-stylesheet href="mystyle.css" type="text/css"?>
   svg.setAttribute("width", paper_width + "pt");
   svg.setAttribute("height", paper_height + "pt");
   var viewBox = "0 0 " + paper_width + " " + paper_height;
@@ -817,11 +819,11 @@ function cardMake() {
   credit.setAttributeNS(null, 'font-size', paper_height / 100);
   //    text.setAttributeNS(null, 'font-family', "Times");
   credit.setAttributeNS(null, 'fill', '#2B2B2B');
-  credit.innerHTML = "https://github.com/botamochi6277/botamochi6277.github.io/tree/master/cardMaker, " + date_obj.toString();
+  credit.innerHTML = "https://botamochi6277.github.io/cardMaker/, " + date_obj.toString();
   console.log("attach credit and paper to svg group object");
   group.appendChild(credit);
   group.appendChild(paper);
-//  if (!isPrint) {
+  //  if (!isPrint) {
   //    console.log("start to print");
   //    var draw = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
   //    draw.setAttributeNS(null, 'x', margin.x);
@@ -837,17 +839,49 @@ function cardMake() {
   console.log("attach groups to svg object");
   svg.appendChild(group);
   tagObj.innerHTML = svg.outerHTML;
+  var header = '<?xml version="1.0" standalone="no"?>';
+  header += '<?xml-stylesheet href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"?>'
+  header += '<?xml-stylesheet href="https://botamochi6277.github.io/FontBotamochi/build/fonts/FontBotamochi.css" type="text/css"?>'
+    //  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    //  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    //  <link href="https://botamochi6277.github.io/FontBotamochi/build/fonts/FontBotamochi.css" rel="stylesheet">
   if (isPrint) {
     //    window.location.href = "svg.html?" + escape(svg.outerHTML);
-    document.getElementById("svgPrint").style.display = "block";
-    document.getElementById("svgPrint").innerHTML = svg.outerHTML;
-    document.getElementById("container").style.display = "none";
-    window.print();
-    revail();
+    //    document.getElementById("svgPrint").style.display = "block";
+    //    document.getElementById("svgPrint").innerHTML = svg.outerHTML;
+    //    document.getElementById("container").style.display = "none";
+    //    window.print();
+    //    revail();
+    var filename = "botalab-card-" + date_obj.toISOString() + ".svg";
+    //    document.getElementById("download").download = filename;
+    var blob = new Blob([header + svg.outerHTML], {
+      "type": "text/xml"
+    });
+    console.log(window.navigator.msSaveBlob);
+    if (window.navigator.msSaveBlob) {
+      window.navigator.msSaveBlob(blob, filename);
+      // msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    }
+    else {
+      document.getElementById("print").href = window.URL.createObjectURL(blob);
+    }
   }
   if (isDownload) {
-    var header = "";
-    downloadAsFile("botalab-card-" + date_obj.toISOString() + ".svg", header + svg.outerHTML);
+    var filename = "botalab-card-" + date_obj.toISOString() + ".svg";
+    document.getElementById("download").download = filename;
+    var blob = new Blob([header + svg.outerHTML], {
+      "type": "text/xml"
+    });
+    console.log(window.navigator.msSaveBlob);
+    if (window.navigator.msSaveBlob) {
+      window.navigator.msSaveBlob(blob, filename);
+      // msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    }
+    else {
+      document.getElementById("download").href = window.URL.createObjectURL(blob);
+    }
   }
   //    document.write(svg.outerHTML);
   // 文字列として出力
