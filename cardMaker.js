@@ -570,39 +570,21 @@ card_group.prototype.setContents = function () {
     }
     else if (this.cap.innerHTML != "") {
       if (this.subcap.innerHTML != "") {
+        // Caption and Subcaption
         this.cap.setAttributeNS(null, 'font-size', 0.4 * this.stnd);
         this.subcap.setAttributeNS(null, 'font-size', 0.3 * this.stnd);
-        switch (this.layout) {
-        case "horizontal":
-          this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.33 * this.ref_rect.width);
-          this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.25 * this.ref_rect.height);
-          this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.33 * this.ref_rect.width);
-          this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.75 * this.ref_rect.height);
-          break;
-        case "vertical":
-          this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
-          this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.25 * this.ref_rect.height);
-          this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
-          this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.75 * this.ref_rect.height);
-          break;
-        default:
-          break;
-        }
+        this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+        this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.25 * this.ref_rect.height);
+        this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+        this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.75 * this.ref_rect.height);
+        capWidthMax = this.ref_rect.width;
+        subcapWidthMax = this.ref_rect.width;
       }
       // Caption Only
       this.cap.setAttributeNS(null, 'font-size', 0.5 * this.stnd);
-      switch (this.layout) {
-      case "horizontal":
-        this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.33 * this.ref_rect.width);
-        this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
-        break;
-      case "vertical":
-        this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
-        this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
-        break;
-      default:
-        break;
-      }
+      this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+      this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height)
+      capWidthMax = this.ref_rect.width;
     }
     this.icon.setAttributeNS(null, 'font-family', this.icon_family);
     this.icon.setAttributeNS(null, 'fill', '#2B2B2B');
