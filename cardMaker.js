@@ -101,7 +101,7 @@ function fillsize() {
     break;
   }
   // swap width for height according to attribute of paper: landscape and portrait
-  var isSwap = (document.getElementById("landscape").checked && 1.0 * elm_w.value < 1.0 * elm_h.value) || (document.getElementById("portrait").checked && 1.0 * elm_w.value > 1.0 * elm_h.value);
+  var isSwap = (!document.getElementById("portrait").checked && 1.0 * elm_w.value < 1.0 * elm_h.value) || (document.getElementById("portrait").checked && 1.0 * elm_w.value > 1.0 * elm_h.value);
   if (isSwap) {
     //    console.log("w: " + elm_w.value + ", H: " + elm_h.value + ", isLandscape: " + document.getElementById("landscape").checked);
     var tmp = elm_w.value;
@@ -208,7 +208,7 @@ function fillsize() {
   document.getElementById("slaveUnit1").innerHTML = elm_u.value; // Card size
   document.getElementById("slaveUnit2").innerHTML = elm_u.value; // Card margin
   var card_id = document.getElementById("card_id");
-  if (document.getElementById("multiple").checked) {
+  if (!document.getElementById("single").checked) {
     card_id.style.display = "inline";
   }
   else {
@@ -231,7 +231,7 @@ function load_card_id() {
     document.getElementById("cap").value = "";
     document.getElementById("subcap").value = "";
     document.getElementById("icon_str").value = "";
-    document.getElementById("card_layout").value = "center";
+    document.getElementById("card_layout").value = "vertical";
     // document.getElementById("iconFont").value = "FontAwesome" ;
     // document.getElementById("iconFont").style.fontFamily = "FontAwesome" ;
     // nothing
@@ -260,7 +260,7 @@ function load_card_id() {
 var card = function (id) {
   // console.log("create card" + id);
   this.id = id;
-  this.layout = "center";
+  this.layout = "vertical";
   this.cap = "caption";
   this.subcap = "subcaption";
   this.icon_str = "&#xf2b4;";
@@ -307,7 +307,7 @@ var card_group = function () {
   this.icon = document.createElementNS('http://www.w3.org/2000/svg', 'text');
   // this.id_group = document.createElementNS('http://www.w3.org/2000/svg', 'text');
   this.outline;
-  if (!document.getElementById("multiple").checked) {
+  if (document.getElementById("single").checked) {
     this.id = 0;
   }
   var dat_card = JSON.parse(window.sessionStorage.getItem("card" + this.id));
@@ -315,7 +315,7 @@ var card_group = function () {
     this.cap.innerHTML = "null";
     this.subcap.innerHTML = "";
     this.icon.innerHTML = "";
-    this.layout = "center";
+    this.layout = "vertical";
   }
   else {
     this.cap.innerHTML = dat_card.cap;
@@ -329,6 +329,13 @@ var card_group = function () {
 };
 card_group.prototype.setOutline = function () {
   // console.log("execute setOutline");
+  var gap = 0;
+  if (this.rect.width > this.rect.height) {
+    gap = 0.05 * this.rect.height;
+  }
+  else {
+    gap = 0.05 * this.rect.width;
+  }
   var outlineType = document.getElementById("card_outline").value;
   //  Outline
   // console.log("outlineType: " + outlineType);
@@ -344,12 +351,6 @@ card_group.prototype.setOutline = function () {
     this.ref_rect.height = 0.9 * this.rect.height;
     this.ref_pos.x = this.pos.x + 0.5 * (this.rect.width - this.ref_rect.width);
     this.ref_pos.y = this.pos.y + 0.5 * (this.rect.height - this.ref_rect.height);
-    if (this.ref_rect.width > this.ref_rect.height) {
-      this.stnd = this.ref_rect.height;
-    }
-    else {
-      this.stnd = this.ref_rect.width;
-    }
     break;
   case "diamond":
     this.outline = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -362,31 +363,19 @@ card_group.prototype.setOutline = function () {
     this.ref_rect.height = 0.707 * this.rect.height;
     this.ref_pos.x = this.pos.x + 0.5 * (this.rect.width - this.ref_rect.width);
     this.ref_pos.y = this.pos.y + 0.5 * (this.rect.height - this.ref_rect.height);
-    if (this.ref_rect.width > this.ref_rect.height) {
-      this.stnd = this.ref_rect.height;
-    }
-    else {
-      this.stnd = this.ref_rect.width;
-    }
     break;
   case "capsule":
-    this.ref_rect.width = this.rect.width;
-    this.ref_rect.height = this.rect.height;
-    this.ref_pos.x = this.pos.x;
-    this.ref_pos.y = this.pos.y;
-    if (this.ref_rect.width > this.ref_rect.height) {
-      this.stnd = this.ref_rect.height;
-    }
-    else {
-      this.stnd = this.ref_rect.width;
-    }
+    this.ref_rect.width = this.rect.width - 2 * gap;
+    this.ref_rect.height = this.rect.height - 2 * gap;
+    this.ref_pos.x = this.pos.x + gap;
+    this.ref_pos.y = this.pos.y + gap;
     this.outline = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     this.outline.setAttributeNS(null, 'x', this.pos.x);
     this.outline.setAttributeNS(null, 'y', this.pos.y);
     this.outline.setAttributeNS(null, 'width', this.rect.width);
     this.outline.setAttributeNS(null, 'height', this.rect.height);
-    this.outline.setAttributeNS(null, 'rx', 0.5 * this.stnd);
-    this.outline.setAttributeNS(null, 'ry', 0.5 * this.stnd);
+    this.outline.setAttributeNS(null, 'rx', 10 * gap);
+    this.outline.setAttributeNS(null, 'ry', 10 * gap);
     break;
   case "hexagon":
     const PI = 3.14195;
@@ -403,22 +392,12 @@ card_group.prototype.setOutline = function () {
     this.ref_rect.height = 0.9 * this.rect.height;
     this.ref_pos.x = this.pos.x + 0.5 * (this.rect.width - this.ref_rect.width);
     this.ref_pos.y = this.pos.y + 0.5 * (this.rect.height - this.ref_rect.height);
-    if (this.ref_rect.width > this.ref_rect.height) {
-      this.stnd = this.ref_rect.height;
-    }
-    else {
-      this.stnd = this.ref_rect.width;
-    }
     break;
   default:
-    this.ref_rect = this.rect;
-    this.ref_pos = this.pos;
-    if (this.ref_rect.width > this.ref_rect.height) {
-      this.stnd = this.ref_rect.height;
-    }
-    else {
-      this.stnd = this.ref_rect.width;
-    }
+    this.ref_rect.width = this.rect.width - 2 * gap;
+    this.ref_rect.height = this.rect.height - 2 * gap;
+    this.ref_pos.x = this.pos.x + gap;
+    this.ref_pos.y = this.pos.y + gap;
     this.outline = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     this.outline.setAttributeNS(null, 'x', this.pos.x);
     this.outline.setAttributeNS(null, 'y', this.pos.y);
@@ -426,13 +405,21 @@ card_group.prototype.setOutline = function () {
     this.outline.setAttributeNS(null, 'height', this.rect.height);
     break;
   }
+  if (this.ref_rect.width > this.ref_rect.height) {
+    this.stnd = this.ref_rect.height;
+  }
+  else {
+    this.stnd = this.ref_rect.width;
+  }
   this.outline.setAttributeNS(null, 'stroke', 'blue');
   this.outline.setAttributeNS(null, 'stroke-width', this.stnd / 500);
   this.outline.setAttributeNS(null, 'fill', 'none');
   this.outline.setAttributeNS(null, 'stroke-dasharray', this.rect.width / 100 + "," + this.rect.height / 50);
   // console.log("outline: " + this.outline);
-  this.group.appendChild(this.outline);
-  if (document.getElementById("ref_on_card").checked && outlineType != "rect") {
+  if (document.getElementById("line_on_card").checked) {
+    this.group.appendChild(this.outline);
+  }
+  if (document.getElementById("ref_on_card").checked) {
     var ref_box = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     ref_box.setAttributeNS(null, 'x', this.ref_pos.x); // 1/sqrt(2) = 1/1.41 = 0.707
     ref_box.setAttributeNS(null, 'y', this.ref_pos.y);
@@ -447,6 +434,8 @@ card_group.prototype.setOutline = function () {
 };
 card_group.prototype.setContents = function () {
     // console.log("execute setContents");
+    var capWidthMax = 0;
+    var subcapWidthMax = 0;
     this.cap.setAttributeNS(null, 'font-weight', "bold");
     this.cap.setAttributeNS(null, 'text-anchor', "middle");
     this.cap.setAttributeNS(null, 'dominant-baseline', "central");
@@ -458,41 +447,47 @@ card_group.prototype.setContents = function () {
       if (this.cap.innerHTML != "") {
         if (this.subcap.innerHTML != "") {
           // Full contents
-          switch (document.getElementById("card_layout").value) {
-          case "left":
-            if (this.ref_rect.width / this.ref_rect.height > 2) {
-              this.icon.setAttributeNS(null, 'font-size', 0.8 * this.stnd);
-              this.cap.setAttributeNS(null, 'font-size', 0.4 * this.stnd);
-              this.subcap.setAttributeNS(null, 'font-size', 0.2 * this.stnd);
-              this.cap.setAttributeNS(null, 'x', this.ref_pos.x + this.stnd + 0.5 * (this.ref_rect.width - this.stnd));
-              this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.4 * this.ref_rect.height);
-              this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + this.stnd + 0.5 * (this.ref_rect.width - this.stnd));
-              this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.7 * this.ref_rect.height);
-              this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.stnd);
-              this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
-            }
-            else {
-              this.icon.setAttributeNS(null, 'font-size', 0.6 * this.stnd);
-              this.cap.setAttributeNS(null, 'font-size', 0.3 * this.stnd);
-              this.subcap.setAttributeNS(null, 'font-size', 0.15 * this.stnd);
-              this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.75 * this.ref_rect.width);
-              this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.4 * this.ref_rect.height);
-              this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.75 * this.ref_rect.width);
-              this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.7 * this.ref_rect.height);
-              this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.25 * this.ref_rect.width);
-              this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
-            }
+          switch (this.layout) {
+          case "horizontal":
+            this.icon.setAttributeNS(null, 'font-size', 0.5 * this.stnd);
+            this.cap.setAttributeNS(null, 'font-size', 0.8 * 0.5 * this.stnd);
+            this.subcap.setAttributeNS(null, 'font-size', 0.8 * 0.33 * this.stnd);
+            this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.stnd + 0.5 * (this.ref_rect.width - 0.5 * this.stnd));
+            this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.37 * this.ref_rect.height);
+            this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.stnd + 0.5 * (this.ref_rect.width - 0.5 * this.stnd));
+            this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + (1.0 - 0.5 * 0.33 - 0.12) * this.ref_rect.height);
+            this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.25 * this.stnd);
+            this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            capWidthMax = this.ref_rect.width - 0.5 * this.stnd;
+            subcapWidthMax = this.ref_rect.width - 0.5 * this.stnd;
             break;
-          case "center":
-            this.icon.setAttributeNS(null, 'font-size', 0.4 * this.stnd);
-            this.cap.setAttributeNS(null, 'font-size', 0.15 * this.stnd);
-            this.subcap.setAttributeNS(null, 'font-size', 0.1 * this.stnd);
+          case "vertical":
+            this.icon.setAttributeNS(null, 'font-size', 0.45 * this.stnd);
+            this.cap.setAttributeNS(null, 'font-size', 0.8 * 0.3 * this.stnd);
+            this.subcap.setAttributeNS(null, 'font-size', 0.8 * 0.2 * this.stnd);
             this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
-            this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.66 * this.ref_rect.height);
+            this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.6 * this.ref_rect.height);
             this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
-            this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.83 * this.ref_rect.height);
+            this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.9 * this.ref_rect.height);
             this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
-            this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.33 * this.ref_rect.height);
+            this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.225 * this.ref_rect.height);
+            capWidthMax = this.ref_rect.width;
+            subcapWidthMax = this.ref_rect.width;
+            break;
+          case "overlay":
+            this.icon.setAttributeNS(null, 'font-size', this.stnd);
+            this.cap.setAttributeNS(null, 'font-size', 0.8 * 0.3 * this.stnd);
+            this.subcap.setAttributeNS(null, 'font-size', 0.8 * 0.2 * this.stnd);
+            this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+            this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.35 * this.ref_rect.height);
+            this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+            this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.65 * this.ref_rect.height);
+            this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+            this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            //            this.cap.setAttributeNS(null, 'stroke', 'white');
+            //            this.cap.setAttributeNS(null, 'stroke-width', 0.05 * 0.25 * this.stnd);
+            capWidthMax = this.ref_rect.width;
+            subcapWidthMax = this.ref_rect.width;
             break;
           default:
             break;
@@ -501,31 +496,53 @@ card_group.prototype.setContents = function () {
         else {
           // Icon & Caption
           switch (this.layout) {
-          case "left":
-            if (this.ref_rect.width / this.ref_rect.height > 2) {
-              this.icon.setAttributeNS(null, 'font-size', 0.8 * this.stnd);
-              this.cap.setAttributeNS(null, 'font-size', 0.5 * this.stnd);
-              this.cap.setAttributeNS(null, 'x', this.ref_pos.x + this.stnd + 0.5 * (this.ref_rect.width - this.stnd));
-              this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
-              this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.stnd);
-              this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
-            }
-            else {
-              this.icon.setAttributeNS(null, 'font-size', 0.6 * this.stnd);
-              this.cap.setAttributeNS(null, 'font-size', 0.3 * this.stnd);
-              this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.75 * this.ref_rect.width);
-              this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
-              this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.25 * this.ref_rect.width);
-              this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
-            }
+          case "horizontal":
+            //            if (this.ref_rect.width / this.ref_rect.height > 2) {
+            //              this.icon.setAttributeNS(null, 'font-size', 0.8 * this.stnd);
+            //              this.cap.setAttributeNS(null, 'font-size', 0.5 * this.stnd);
+            //              this.cap.setAttributeNS(null, 'x', this.ref_pos.x + this.stnd + 0.5 * (this.ref_rect.width - this.stnd));
+            //              this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            //              this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.stnd);
+            //              this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            //            }
+            //            else {
+            //              this.icon.setAttributeNS(null, 'font-size', 0.6 * this.stnd);
+            //              this.cap.setAttributeNS(null, 'font-size', 0.3 * this.stnd);
+            //              this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.75 * this.ref_rect.width);
+            //              this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            //              this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.25 * this.ref_rect.width);
+            //              this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            //            }
+            this.icon.setAttributeNS(null, 'font-size', 0.5 * this.stnd);
+            this.cap.setAttributeNS(null, 'font-size', 0.8 * 0.5 * this.stnd);
+            this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.stnd + 0.5 * (this.ref_rect.width - 0.5 * this.stnd));
+            this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.25 * this.stnd);
+            this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            capWidthMax = this.ref_rect.width - 0.5 * this.stnd;
+            subcapWidthMax = this.ref_rect.width;
             break;
-          case "center":
-            this.icon.setAttributeNS(null, 'font-size', 0.4 * this.stnd);
-            this.cap.setAttributeNS(null, 'font-size', 0.15 * this.stnd);
+          case "vertical":
+            this.icon.setAttributeNS(null, 'font-size', 0.75 * this.stnd);
+            this.cap.setAttributeNS(null, 'font-size', 0.25 * 0.8 * this.stnd);
             this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
-            this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.75 * this.ref_rect.height);
+            this.cap.setAttributeNS(null, 'y', this.ref_pos.y + (0.75 + 0.5 * 0.25) * this.ref_rect.height);
             this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
-            this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.4 * this.ref_rect.height);
+            this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * 0.75 * this.ref_rect.height);
+            capWidthMax = this.ref_rect.width;
+            subcapWidthMax = this.ref_rect.width;
+            break;
+          case "overlay":
+            this.icon.setAttributeNS(null, 'font-size', this.stnd);
+            this.cap.setAttributeNS(null, 'font-size', 0.8 * 0.3 * this.stnd);
+            this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+            this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+            this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+            //            this.cap.setAttributeNS(null, 'stroke', 'white');
+            //            this.cap.setAttributeNS(null, 'stroke-width', 0.05 * 0.25 * this.stnd);
+            capWidthMax = this.ref_rect.width;
+            subcapWidthMax = this.ref_rect.width;
             break;
           default:
             break;
@@ -535,12 +552,12 @@ card_group.prototype.setContents = function () {
       else {
         // Only icon
         switch (this.layout) {
-        case "left":
+        case "horizontal":
           this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.25 * this.ref_rect.width);
           this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
           this.icon.setAttributeNS(null, 'font-size', 0.6 * this.stnd);
           break;
-        case "center":
+        case "vertical":
           this.icon.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
           this.icon.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
           this.icon.setAttributeNS(null, 'text-anchor', "middle");
@@ -556,13 +573,13 @@ card_group.prototype.setContents = function () {
         this.cap.setAttributeNS(null, 'font-size', 0.4 * this.stnd);
         this.subcap.setAttributeNS(null, 'font-size', 0.3 * this.stnd);
         switch (this.layout) {
-        case "left":
+        case "horizontal":
           this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.33 * this.ref_rect.width);
           this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.25 * this.ref_rect.height);
           this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.33 * this.ref_rect.width);
           this.subcap.setAttributeNS(null, 'y', this.ref_pos.y + 0.75 * this.ref_rect.height);
           break;
-        case "center":
+        case "vertical":
           this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
           this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.25 * this.ref_rect.height);
           this.subcap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
@@ -575,11 +592,11 @@ card_group.prototype.setContents = function () {
       // Caption Only
       this.cap.setAttributeNS(null, 'font-size', 0.5 * this.stnd);
       switch (this.layout) {
-      case "left":
+      case "horizontal":
         this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.33 * this.ref_rect.width);
         this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
         break;
-      case "center":
+      case "vertical":
         this.cap.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
         this.cap.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
         break;
@@ -587,21 +604,12 @@ card_group.prototype.setContents = function () {
         break;
       }
     }
-    this.cap.setAttributeNS(null, 'font-family', "Helvetica,Arial");
-    this.cap.setAttributeNS(null, 'fill', '#2B2B2B');
-    this.cap.setAttributeNS(null, 'id', 'card' + this.id + "_caption");
-    //    console.log( "Value: "+document.getElementById("cap").list)
-    this.group.appendChild(this.cap);
-    this.subcap.setAttributeNS(null, 'font-family', "Helvetica,Arial");
-    this.subcap.setAttributeNS(null, 'fill', '#2B2B2B');
-    this.subcap.setAttributeNS(null, 'id', 'card' + this.id + "_subcaption");
-    //    console.log( "Value: "+document.getElementById("cap").list)
-    this.group.appendChild(this.subcap);
     this.icon.setAttributeNS(null, 'font-family', this.icon_family);
     this.icon.setAttributeNS(null, 'fill', '#2B2B2B');
     this.icon.setAttributeNS(null, 'id', 'card' + this.id + "_icon");
     this.group.appendChild(this.icon);
-    if (document.getElementById("ref_on_card").checked) {
+    //  add reference rect
+    if (document.getElementById("id_on_card").checked) {
       var card_id = document.createElementNS('http://www.w3.org/2000/svg', 'text');
       card_id.setAttributeNS(null, 'text-anchor', "start");
       card_id.setAttributeNS(null, 'dominant-baseline', "text-before-edge");
@@ -613,52 +621,86 @@ card_group.prototype.setContents = function () {
       card_id.innerHTML = this.id;
       this.group.appendChild(card_id);
     }
+    this.cap.setAttributeNS(null, 'font-family', "Helvetica,Arial");
+    this.cap.setAttributeNS(null, 'fill', '#2B2B2B');
+    this.cap.setAttributeNS(null, 'id', 'card' + this.id + "_caption");
+    //    console.log( "Value: "+document.getElementById("cap").list)
+    if (this.layout == "overlay") {
+      var capBg = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      capBg.setAttributeNS(null, 'font-weight', "bold");
+      capBg.setAttributeNS(null, 'text-anchor', "middle");
+      capBg.setAttributeNS(null, 'dominant-baseline', "central");
+      capBg.setAttributeNS(null, 'stroke', 'white');
+      capBg.innerHTML = this.cap.innerHTML;
+      capBg.setAttributeNS(null, 'x', this.cap.getAttributeNS(null, 'x'));
+      capBg.setAttributeNS(null, 'y', this.cap.getAttributeNS(null, 'y'));
+      capBg.setAttributeNS(null, 'font-family', this.cap.getAttributeNS(null, 'font-family'));
+      capBg.setAttributeNS(null, 'font-size', this.cap.getAttributeNS(null, 'font-size'));
+      capBg.setAttributeNS(null, 'stroke-width', 0.2 * this.cap.getAttributeNS(null, 'font-size'));
+      //      capBg.setAttributeNS(null, 'x', this.ref_pos.x + 0.5 * this.ref_rect.width);
+      //      capBg.setAttributeNS(null, 'y', this.ref_pos.y + 0.5 * this.ref_rect.height);
+      capBg.setAttributeNS(null, 'fill', '#FFFFFF');
+      this.group.appendChild(capBg);
+    }
+    this.group.appendChild(this.cap);
+    this.subcap.setAttributeNS(null, 'font-family', "Helvetica,Arial");
+    this.subcap.setAttributeNS(null, 'fill', '#2B2B2B');
+    this.subcap.setAttributeNS(null, 'id', 'card' + this.id + "_subcaption");
+    if (this.layout == "overlay") {
+      var subcapBg = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      subcapBg.setAttributeNS(null, 'text-anchor', "middle");
+      subcapBg.setAttributeNS(null, 'dominant-baseline', "central");
+      subcapBg.setAttributeNS(null, 'stroke', 'white');
+      subcapBg.innerHTML = this.subcap.innerHTML;
+      subcapBg.setAttributeNS(null, 'x', this.subcap.getAttributeNS(null, 'x'));
+      subcapBg.setAttributeNS(null, 'y', this.subcap.getAttributeNS(null, 'y'));
+      subcapBg.setAttributeNS(null, 'font-family', this.subcap.getAttributeNS(null, 'font-family'));
+      subcapBg.setAttributeNS(null, 'font-size', this.subcap.getAttributeNS(null, 'font-size'));
+      subcapBg.setAttributeNS(null, 'stroke-width', 0.2 * this.subcap.getAttributeNS(null, 'font-size'));
+      subcapBg.setAttributeNS(null, 'fill', '#FFFFFF');
+      this.group.appendChild(subcapBg);
+    }
+    //    console.log( "Value: "+document.getElementById("cap").list)
+    this.group.appendChild(this.subcap);
     // rendering
     // modify font size of caption and subcaption
     this.test_render();
     var cap_width = document.getElementById(this.cap.id).getComputedTextLength();
-    if (cap_width > this.ref_rect.width) {
+    if (cap_width > capWidthMax) {
       // caption is overflowing its reference rect.
-      var fontSize = this.cap.getAttributeNS(null, 'font-size') * this.ref_rect.width / cap_width;
+      var fontSize = this.cap.getAttributeNS(null, 'font-size') * capWidthMax / cap_width;
       this.cap.setAttributeNS(null, 'font-size', fontSize);
+      if (this.layout == "overlay") {
+        capBg.setAttributeNS(null, 'font-size', fontSize);
+      }
     }
     var subcap_width = document.getElementById(this.subcap.id).getComputedTextLength();
-    if (subcap_width > this.ref_rect.width) {
+    if (subcap_width > subcapWidthMax) {
       // caption is overflowing its reference rect.
-      var fontSize = this.subcap.getAttributeNS(null, 'font-size') * this.ref_rect.width / subcap_width;
+      var fontSize = this.subcap.getAttributeNS(null, 'font-size') * subcapWidthMax / subcap_width;
       this.subcap.setAttributeNS(null, 'font-size', fontSize);
     }
-    // if (true) {
-    //   // http://www.h2.dion.ne.jp/~defghi/svgMemo/svgMemo_15.htm
-    //   console.log("this.cap: " + this.cap);
-    //   console.log("ComputedTextLength: " + this.cap.getComputedTextLength());
-    //   console.log("NumberOfChars: " + this.cap.getNumberOfChars() );
-    //   console.log("TextLength: " + this.cap.textLength );
-    //   var cap_obj = document.getElementById(this.cap.id);
-    //   console.log(cap_obj);
-    //   console.log("ComputedTextLength: " + cap_obj.getComputedTextLength());
-    //   console.log("font-size: " + this.cap.getAttributeNS(null, 'font-size'));
-    // }
-    // console.log("finish contents");
   }
   /**
    * @brief Paper Class
    */
   // Set up
 card_group.prototype.test_render = function () {
-  var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttributeNS(null, 'version', '1.1');
-  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-  svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-  svg.setAttribute("width", this.rect.width + "pt");
-  svg.setAttribute("height", this.rect.height + "pt");
-  var viewBox = "0 0 " + this.rect.width + " " + this.rect.height;
-  svg.setAttribute("viewBox", viewBox);
-  svg.appendChild(this.group);
-  var tagObj = document.getElementById("minicard");
-  tagObj.innerHTML = svg.outerHTML;
-}
-
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttributeNS(null, 'version', '1.1');
+    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+    svg.setAttribute("width", this.rect.width + "pt");
+    svg.setAttribute("height", this.rect.height + "pt");
+    var viewBox = "0 0 " + this.rect.width + " " + this.rect.height;
+    svg.setAttribute("viewBox", viewBox);
+    svg.appendChild(this.group);
+    var tagObj = document.getElementById("minicard");
+    tagObj.innerHTML = svg.outerHTML;
+  }
+  /**
+   * @brief check whether sessionStorage is available.
+   */
 function setup() {
   if (window.sessionStorage) {
     // ------------------------------------------------------------
@@ -842,22 +884,12 @@ function cardMake() {
   var header = '<?xml version="1.0" standalone="no"?>';
   header += '<?xml-stylesheet href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"?>'
   header += '<?xml-stylesheet href="https://botamochi6277.github.io/FontBotamochi/build/fonts/FontBotamochi.css" type="text/css"?>'
-    //  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-    //  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-    //  <link href="https://botamochi6277.github.io/FontBotamochi/build/fonts/FontBotamochi.css" rel="stylesheet">
   if (isPrint) {
-    //    window.location.href = "svg.html?" + escape(svg.outerHTML);
-    //    document.getElementById("svgPrint").style.display = "block";
-    //    document.getElementById("svgPrint").innerHTML = svg.outerHTML;
-    //    document.getElementById("container").style.display = "none";
-    //    window.print();
-    //    revail();
     var filename = "botalab-card-" + date_obj.toISOString() + ".svg";
-    //    document.getElementById("download").download = filename;
     var blob = new Blob([header + svg.outerHTML], {
       "type": "text/xml"
     });
-    console.log(window.navigator.msSaveBlob);
+    //    console.log(window.navigator.msSaveBlob);
     if (window.navigator.msSaveBlob) {
       window.navigator.msSaveBlob(blob, filename);
       // msSaveOrOpenBlobの場合はファイルを保存せずに開ける

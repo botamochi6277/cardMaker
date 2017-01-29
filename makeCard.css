@@ -71,6 +71,8 @@ input[type="radio"]:checked + i {
   border: 1px solid #8E8E93;
   border-radius: 0.2em;
   margin-right: 0em;
+  font-size: 14pt;
+  line-height: 1.42857143;
 }
 
 .custom:after {
@@ -85,8 +87,13 @@ input[type="radio"]:checked + i {
   pointer-events: none;
 }
 
-input[type="number"] {
+input {
   width: auto;
+  font-size: 14pt;
+  line-height: 1.42857143;
+}
+
+input[type="number"] {
   max-width: 6em;
 }
 
@@ -114,4 +121,14 @@ i {
   max-width: 33%;
   overflow: scroll;
   border: solid #C7C7CC;
+}
+
+input[type="radio"]:checked + .switch-on {
+  background-color: #a1b91d;
+  color: #fff;
+}
+
+input[type="radio"]:checked + .switch-off {
+  background-color: #e67168;
+  color: #fff;
 }

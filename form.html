@@ -9,6 +9,7 @@
   <title>Card maker</title>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <link href="https://botamochi6277.github.io/FontBotamochi/build/fonts/FontBotamochi.css" rel="stylesheet">
   <link href="makeCard.css" rel="stylesheet">
   <!--[if lt IE 9]>
@@ -22,9 +23,9 @@
     <h1>
       <div class="row">
         <div class="col-md-9 col-sm-9 col-lg-9"><i class="fb fb-botamochi-card"></i> Card/Label Maker</div>
-        <div class="col-md-1 col-sm-1 col-lg-1" id="ver"><sub>ver.<br />2.10</sub></div>
+        <div class="col-md-1 col-sm-1 col-lg-1" id="ver"><sub>ver.<br />2.20</sub></div>
         <div class="col-md-1 col-sm-1 col-lg-1"><a href="info.html" target="_blank"><i class="fa fa-info-circle" aria-hidden="true"></i></a></div>
-        <div class="col-md-1 col-sm-1 col-lg-1"><a href="https://github.com/botamochi6277/botamochi6277.github.io/tree/master/cardMaker" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i></a></div>
+        <div class="col-md-1 col-sm-1 col-lg-1"><a href="https://botamochi6277.github.io/cardMaker/" target="_blank"><i class="fa fa-question-circle" aria-hidden="true"></i></a></div>
       </div>
     </h1>
     <!-- Paper Size  -->
@@ -39,21 +40,23 @@
               <option value="Letter">Letter</option>
               <option value="optional">Optional Size</option>
             </select>
+          </div> &nbsp;
+          <!--
+          <div class="radio radio-inline">
+            <input type="radio" id="portrait" value="portrait" name="attitude" checked="checked" onclick="fillsize();">
+            <label for="portrait"> Portrait </label>
           </div>
-          <div class="radio-inline">
-            <label>
-              <input type="radio" id="portrait" name="attitude" checked="checked" onclick="fillsize();">Portrait</label>
+          <div class="radio radio-inline">
+            <input type="radio" id="landscape" value="landscape" name="attitude" onclick="fillsize();">
+            <label for="landscape"> Landscape </label>
           </div>
-          <div class="radio-inline">
-            <label>
-              <input type="radio" id="landscape" name="attitude" onclick="fillsize();">Landscape</label>
-          </div>
-        </div>
+-->
+          <input type="checkbox" id="portrait" checked data-toggle="toggle" data-on='<i class="fa fa-file-o" aria-hidden="true"></i> Portrait' data-off='<i class="fa fa-file-o fa-rotate-270" aria-hidden="true"></i> Landscape' data-onstyle="" data-offstyle="info" checked="checked" onchange="fillsize();"> </div>
         <br />
         <!-- Paper Size -->
         <div class="row">
-          <div class="col-xs-1"><strong>Size: </strong></div>
-          <div class="col-xs-11">
+          <div class="col-xs-2"><strong>Size: </strong></div>
+          <div class="col-xs-10">
             <input type="number" name="paper_width" id="paper_width" value="" placeholder="Width" /> <i class="fa fa-times"></i>
             <input type="number" name="paper_height" id="paper_height" value="" placeholder="Height" />
             <div class="custom">
@@ -68,8 +71,8 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-1"><strong>Margin: </strong></div>
-          <div class="col-xs-11">
+          <div class="col-xs-2"><strong>Margin: </strong></div>
+          <div class="col-xs-10">
             <input type="number" name="margin_x" id="margin_x" value="" placeholder="margin x" /> <i class="fa fa-times"></i>
             <input type="number" name="margin_y" id="margin_y" value="" placeholder="margin y" /> <span id="slaveUnit0" class="unit"></span> </div>
         </div>
@@ -89,20 +92,20 @@
           </select>
         </div>
         <div class="row">
-          <div class="col-xs-1"><strong>Size: </strong></div>
-          <div class="col-xs-11">
+          <div class="col-xs-2"><strong>Size: </strong></div>
+          <div class="col-xs-10">
             <input type="number" name="card_width" id="card_width" value="" placeholder="Width" /> <i class="fa fa-times"></i>
             <input type="number" name="card_height" id="card_height" value="" placeholder="Height" /> <span id="slaveUnit1" class="unit"></span> </div>
         </div>
         <div class="row">
-          <div class="col-xs-1"><strong>Matrix: </strong></div>
-          <div class="col-xs-11">
+          <div class="col-xs-2"><strong>Matrix: </strong></div>
+          <div class="col-xs-10">
             <input type="number" name="card_rows" id="card_rows" value="" placeholder="Rows" /> <i class="fa fa-times"></i>
             <input type="number" name="card_cols" id="card_cols" value="" placeholder="Cols" /> </div>
         </div>
         <div class="row">
-          <div class="col-xs-1"><strong>Margin: </strong></div>
-          <div class="col-xs-11">
+          <div class="col-xs-2"><strong>Margin: </strong></div>
+          <div class="col-xs-10">
             <input type="number" name="card_width" id="cardMarginX" value="" placeholder="X" /> <i class="fa fa-times"></i>
             <input type="number" name="card_height" id="cardMarginY" value="" placeholder="Y" /> <span id="slaveUnit2" class="unit"></span> </div>
         </div>
@@ -122,26 +125,44 @@
     <section>
       <h3>Card/Label Content</h3>
       <!--  Card options    -->
-      <form class="form-inline"> <b>Variety: &nbsp;</b>
-        <div class="radio-inline">
-          <label>
-            <input type="radio" id="single" name="variety" checked="checked" onclick="fillsize();" value="single">Single</label>
-        </div>
-        <div class="radio-inline">
-          <label>
-            <input type="radio" id="multiple" name="variety" onchange="fillsize();load_card_id();" value="multiple">Multiple</label>
-        </div> <b>Options: &nbsp;</b>
-        <div class="checkbox-inline">
-          <label>
-            <input type="checkbox" value="ref" id="ref_on_card">ref</label>
-        </div>
-      </form>
+      <div class="row">
+        <div class="col-sm-4"> <b>Variety: &nbsp;</b>
+          <!--
+          <div class="radio radio-inline">
+            <input type="radio" id="single" value="single" name="variety" checked="checked" onclick="fillsize();">
+            <label for="single"> Single </label>
+          </div>
+          <div class="radio radio-inline">
+            <input type="radio" id="multiple" value="multiple" name="variety" onclick="fillsize();">
+            <label for="multiple"> Multiple </label>
+          </div>
+-->
+          <input type="checkbox" id="single" checked data-toggle="toggle" data-on='Single' data-off='Multiple' data-onstyle="" data-offstyle="info" onchange="fillsize();" checked="false"> </div>
+        <div class="col-sm-8"><b>Options: &nbsp;</b>
+          <!--
+          <div class="checkbox checkbox-inline checkbox-primary">
+            <input id="ref_on_card" class="styled" type="checkbox" checked="checked">
+            <label for="ref_on_card"> Ref </label>
+          </div>
+-->
+          <input type="checkbox" id="ref_on_card" checked data-toggle="toggle" data-on="Ref ON" data-off="Ref OFF" data-onstyle="" data-offstyle="" checked="checked">
+          <input type="checkbox" id="id_on_card" checked data-toggle="toggle" data-on="ID ON" data-off="ID OFF" data-onstyle="" data-offstyle="" checked="checked">
+          <input type="checkbox" id="line_on_card" checked data-toggle="toggle" data-on="Outline ON" data-off="Outline OFF" data-onstyle="" data-offstyle="" checked="checked">
+          <!--
+          <div class="checkbox checkbox-inline checkbox-primary">
+            <input id="line_on_card" class="styled" type="checkbox" checked="checked">
+            <label for="line_on_card"> Outline </label>
+          </div>
+--></div>
+      </div>
+      <br />
       <div id="card">
-        <input type="number" id="card_id" min="0" value="" placeholder="0" onchange="fillsize();load_card_id();" />
+        <input type="number" id="card_id" min="0" value="" placeholder="0" onchange="fillsize();load_card_id();" style='max-width: 3em;' />
         <div class="custom">
           <select name="card_layout" id="card_layout" class="selectpicker" onchange="create_card();">
-            <option value="center">Center</option>
-            <option value="left">Left</option>
+            <option value="vertical">Vertical</option>
+            <option value="horizontal">Horizontal</option>
+            <option value="overlay">Overlay</option>
           </select>
         </div>
         <input type="text" id="cap" value="" placeholder="Caption" onchange="create_card();" />
@@ -158,19 +179,19 @@
       <!-- Icon List-->
       <div id="icon-list"> <span>Copy and Paste Icon Font from below lists and Cheatsheets (<a href="http://fontawesome.io/cheatsheet/" target="_blank">Font Awesome</a>/<a href="https://botamochi6277.github.io/FontBotamochi/build/fonts/FontBotamochi.html#cheatsheet" target="_blank">Font Botamochi</a> )</span>
         <div class="row">
-          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use plug">&#xf1e6</i> fa-plug </div>
-          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use key">&#xf084</i> fa-key </div>
-          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use wrench">&#xf0ad</i> fa-wrench </div>
-          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use pencil">&#xf040</i> fa-pencil </div>
-          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use bicycle">&#xf206</i> fa-bicycle </div>
-          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use file-text">&#xf15c</i> fa-file-text </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use plug">&#xf1e6;</i> fa-plug </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use key">&#xf084;</i> fa-key </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use wrench">&#xf0ad;</i> fa-wrench </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use pencil">&#xf040;</i> fa-pencil </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use bicycle">&#xf1d8;</i> fa-paper-plane </div>
+          <div class="col-md-3 col-sm-6 col-lg-2"> <i class="fa fa-fw" aria-hidden="true" title="Copy to use file-text">&#xf15c;</i> fa-file-text </div>
         </div>
       </div>
       <!--      <div style="width:auto;"></div>-->
       <div>
-        <button type="button" class="btn btn-default" onclick="minicard();">Card Preview</button>
-        <button type="button" class="btn btn-primary" onclick="cardMake('id');">Paper Preview</button>
-        <!-- http://www.tam-tam.co.jp/tipsnote/javascript/post7977.html --><a type="button" class="btn btn-success" onclick="cardMake('print');" id="print" href="" target="_blank">Print</a> <a target="_blank" type="button" class="btn btn-info" onclick="cardMake('download');" id="download" download="test.txt">Download</a> </div>
+        <button type="button" class="btn btn-default" onclick="minicard();">Card Preview <i class="fb fb-botamochi-card"></i><i class="fa fa-id-card-o" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-primary" onclick="cardMake('id');">Paper Preview <i class="fa fa-file-image-o" aria-hidden="true"></i></button>
+        <!-- http://www.tam-tam.co.jp/tipsnote/javascript/post7977.html --><a type="button" class="btn btn-success" onclick="cardMake('print');" id="print" href="" target="_blank">Print <i class="fa fa-print" aria-hidden="true"></i></a> <a target="_blank" type="button" class="btn btn-info" onclick="cardMake('download');" id="download" download="test.txt">Download <i class="fa fa-download" aria-hidden="true"></i></a> </div>
       <br />
       <div style=""></div>
       <div class="row" id="svgWrapper">
@@ -184,6 +205,7 @@
   <a id="svgPrint" onclick="revail();" href="#"></a>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   <script src="cardMaker.js"></script>
 </body>
 
