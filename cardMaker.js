@@ -838,11 +838,12 @@ function cardMake() {
   console.log("margin: " + margin.x + ", " + margin.y);
   console.log("paper: " + paper_width + ", " + paper_height);
   var credit = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  credit.setAttributeNS(null, 'x', margin.x);
+  credit.setAttributeNS('http://www.w3.org/2000/svg', 'x', margin.x);
   credit.setAttributeNS(null, 'y', paper_height - 0.7 * margin.y);
   credit.setAttributeNS(null, 'font-size', paper_height / 100);
   //    text.setAttributeNS(null, 'font-family', "Times");
   credit.setAttributeNS(null, 'fill', '#2B2B2B');
+  credit.setAttributeNS(null, 'opacity', '0.5');
   credit.innerHTML = "https://botamochi6277.github.io/cardMaker/, " + date_obj.toString();
   console.log("attach credit and paper to svg group object");
   group.appendChild(credit);
